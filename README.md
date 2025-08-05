@@ -3,6 +3,8 @@
 [![GoDoc](https://godoc.org/github.com/qiangxue/fasthttp-routing?status.png)](http://godoc.org/github.com/qiangxue/fasthttp-routing)
 [![Go Report](http://goreportcard.com/badge/qiangxue/fasthttp-routing)](http://goreportcard.com/report/qiangxue/fasthttp-routing)
 
+**This is a fork of the original fasthttp-routing package, updated to suit specific needs. The main changes include updating the Go version and upgrading dependencies to address security vulnerabilities.**
+
 ## Description
 
 fasthttp-routing is a Go package that is adapted from [ozzo-routing](https://github.com/go-ozzo/ozzo-routing) to provide
@@ -17,14 +19,14 @@ The package has the following features:
 
 ## Requirements
 
-Go 1.5 or above.
+Go 1.24 or above.
 
 ## Installation
 
 Run the following command to install the package:
 
 ```
-go get github.com/qiangxue/fasthttp-routing
+go get github.com/rbenatti8/fasthttp-routing
 ```
 
 ## Getting Started
@@ -37,7 +39,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/qiangxue/fasthttp-routing"
+	"github.com/rbenatti8/fasthttp-routing"
 	"github.com/valyala/fasthttp"
 )
 

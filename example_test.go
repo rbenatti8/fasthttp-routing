@@ -4,12 +4,12 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/go-ozzo/ozzo-routing"
-	"github.com/go-ozzo/ozzo-routing/access"
-	"github.com/go-ozzo/ozzo-routing/content"
-	"github.com/go-ozzo/ozzo-routing/fault"
-	"github.com/go-ozzo/ozzo-routing/file"
-	"github.com/go-ozzo/ozzo-routing/slash"
+	"github.com/rbenatti8/ozzo-routing/v2"
+	"github.com/rbenatti8/ozzo-routing/v2/access"
+	"github.com/rbenatti8/ozzo-routing/v2/content"
+	"github.com/rbenatti8/ozzo-routing/v2/fault"
+	"github.com/rbenatti8/ozzo-routing/v2/file"
+	"github.com/rbenatti8/ozzo-routing/v2/slash"
 )
 
 func Example() {
