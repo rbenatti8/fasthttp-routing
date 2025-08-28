@@ -43,6 +43,18 @@ func (c *Context) Param(name string) string {
 	return ""
 }
 
+func (c *Context) SetParam(name, value string) {
+	for i, n := range c.pnames {
+		if n == name {
+			c.pvalues[i] = value
+			return
+		}
+	}
+
+	c.pnames = append(c.pnames, name)
+	c.pvalues = append(c.pvalues, value)
+}
+
 // Get returns the named data item previously registered with the context by calling Set.
 // If the named data item cannot be found, nil will be returned.
 func (c *Context) Get(name string) interface{} {
