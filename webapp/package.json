@@ -1,0 +1,11 @@
+{
+  "name": "pocsec-webapp",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Aplicacao vulneravel usada apenas na POC de CodeQL. Nao publicar.",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.19.2",
+    "mysql": "^2.18.1"
+  }
+}
