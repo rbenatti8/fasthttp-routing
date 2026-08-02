@@ -19,12 +19,25 @@ import (
 	"os/exec"
 )
 
-// CWE-022 (TaintedPath): o caminho do arquivo vem direto da query string,
-// permitindo "../../etc/passwd".
-func DownloadHandler(w http.ResponseWriter, r *http.Request) {
-	name := r.URL.Query().Get("file")
+// CORRIGIDO (era CWE-022 / TaintedPath).
+// O input do usuario agora e apenas uma CHAVE de allowlist; o caminho real vem
+// de um mapa fixo. Como o valor nao deriva mais da request, o fluxo de taint e
+// interrompido e o CodeQL deixa de reportar.
+var downloadPaths = map[string]string{
+	"report": "/var/data/report.csv",
+	"audit":  "/var/data/audit.log",
+}
 
-	f, err := os.Open(name)
+func DownloadHandler(w http.ResponseWriter, r *http.Request) {
+	key := r.URL.Query().Get("file")
+
+	path, ok := downloadPaths[key]
+	if !ok {
+		http.Error(w, "not found", http.StatusNotFound)
+		return
+	}
+
+	f, err := os.Open(path)
 	if err != nil {
 		http.Error(w, "not found", http.StatusNotFound)
 		return
@@ -49,11 +62,25 @@ func FetchHandler(w http.ResponseWriter, r *http.Request) {
 	io.Copy(w, resp.Body)
 }
 
-// CWE-078 (CommandInjection): input do usuario concatenado num shell.
-func PingHandler(w http.ResponseWriter, r *http.Request) {
-	host := r.URL.Query().Get("host")
+// CORRIGIDO (era CWE-078 / CommandInjection).
+// Duas mudancas: (1) o endereco vem de allowlist, nao da request; (2) o comando
+// e invocado com argumentos separados, sem passar por "sh -c", eliminando a
+// interpretacao de metacaracteres de shell.
+var pingTargets = map[string]string{
+	"prod":  "10.0.0.1",
+	"stage": "10.0.1.1",
+}
 
-	out, err := exec.Command("sh", "-c", "ping -c 1 "+host).Output()
+func PingHandler(w http.ResponseWriter, r *http.Request) {
+	key := r.URL.Query().Get("target")
+
+	addr, ok := pingTargets[key]
+	if !ok {
+		http.Error(w, "unknown target", http.StatusBadRequest)
+		return
+	}
+
+	out, err := exec.Command("ping", "-c", "1", addr).Output()
 	if err != nil {
 		http.Error(w, "ping failed", http.StatusInternalServerError)
 		return
